@@ -1,0 +1,412 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Dockefile指令教學 - mymdbook</title>
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "light" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="Android_Studio_操作技巧.html"><strong aria-hidden="true">1.</strong> Android_Studio_操作技巧</a></li><li class="chapter-item expanded "><a href="Dockefile指令教學.html" class="active"><strong aria-hidden="true">2.</strong> Dockefile指令教學</a></li><li class="chapter-item expanded "><a href="WSL_for_Windows_Home_10.html"><strong aria-hidden="true">3.</strong> WSL_Windows_Home_10</a></li><li class="chapter-item expanded "><a href="Dockerizing_a_Nodejs_APP.html"><strong aria-hidden="true">4.</strong> Dockerizing Nodejs APP</a></li><li class="chapter-item expanded "><a href="Git-CLI.html"><strong aria-hidden="true">5.</strong> Git 常用 CLI 命令</a></li><li class="chapter-item expanded "><a href="hugo-install.html"><strong aria-hidden="true">6.</strong> HUGO Install</a></li><li class="chapter-item expanded "><a href="Install-Docker-Ubuntu-vnc-desktop.html"><strong aria-hidden="true">7.</strong> Install-Docker-Ubuntu-vnc-desktop</a></li><li class="chapter-item expanded "><a href="OpenHAB.html"><strong aria-hidden="true">8.</strong> OpenHAB</a></li><li class="chapter-item expanded "><a href="VS-Code-plugin.html"><strong aria-hidden="true">9.</strong> VS Code 常用插件</a></li><li class="chapter-item expanded "><a href="Gitea-Git-Hosting.html"><strong aria-hidden="true">10.</strong> 安裝 Gitea Git Hosting</a></li><li class="chapter-item expanded "><a href="install-mdbook.html"><strong aria-hidden="true">11.</strong> mdbook</a></li><li class="chapter-item expanded "><a href="Markdown-Tutorial.html"><strong aria-hidden="true">12.</strong> Markdown Tutorial</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">mymdbook</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1><a class="header" href="#dockefile指令教學" id="dockefile指令教學">Dockefile指令教學</a></h1>
+<hr />
+<h1><a class="header" href="#dockerfile-的組成" id="dockerfile-的組成">Dockerfile 的組成</a></h1>
+<h2><a class="header" href="#from" id="from">FROM</a></h2>
+<blockquote>
+<p>基底映像檔，必需是「第一個」指令行，指定這個映像檔要以哪一個Image為基底來建構
+FROM ubuntu:15.04 或
+FROM ubuntu</p>
+</blockquote>
+<h2><a class="header" href="#maintainer" id="maintainer">MAINTAINER</a></h2>
+<blockquote>
+<p>映像檔維護者，把它想成是作者即可，格式為MAINTAINER <name></p>
+</blockquote>
+<h2><a class="header" href="#label" id="label">LABEL</a></h2>
+<blockquote>
+<p>設定映像檔的Metadata資訊，例如：作者、EMail、映像檔的說明等，格式為：LABEL <key>=<value> <key>=<value> <key>=<value> ...</p>
+</blockquote>
+<h2><a class="header" href="#run" id="run">RUN</a></h2>
+<blockquote>
+<p>執行指定的指令，每加一個RUN，就會在基底映像層加上一層資料層，以此類推，一層一層的建構起我們最後想要的映像檔，例如我們可以利用RUN來安裝套件，其格式分為二種：
+RUN <command>：以shell的形式執行，Linux的預設是/bin/sh -c，而Windows上的預設環境則是cmd /S /C
+RUN [&quot;executable&quot;, &quot;param1&quot;, &quot;param2&quot;]：以exec的形式執行指令，例如Linux上不想用預設的shell執行指令，那麼就可以透過RUN [&quot;/bin/bash&quot;, &quot;-c&quot;, &quot;echo hello&quot;]指定想要的shell</p>
+</blockquote>
+<ul>
+<li>如果想要執行的指令很長，可以利用\符號來換行，比較容易閱讀</li>
+<li>使用exec形式執行時，必需使用JSON array的格式，因此，請使用雙引號</li>
+<li>每一個RUN就會新增一層資料層，為了減少不必要的資料層，可以利用&amp;&amp;來串連多個命令</li>
+</ul>
+<blockquote>
+<p>簡單的RUN指令範例如下：</p>
+<h1><a class="header" href="#install-packages-only-for-demo" id="install-packages-only-for-demo">install packages, only for demo</a></h1>
+<p>RUN mkdir -p /home/demo/docker</p>
+</blockquote>
+<blockquote>
+<p>RUN [&quot;apt-get&quot;, &quot;install&quot;, &quot;python3&quot;]</p>
+</blockquote>
+<blockquote>
+<p>RUN apt-get update &amp;&amp; apt-get install -y --force-yes apache2 <br />
+firefox <br />
+php5</p>
+</blockquote>
+<h2><a class="header" href="#cmd" id="cmd">CMD</a></h2>
+<blockquote>
+<p>設定映像檔啟動為Container時預設要執行的指令，其指令共支援三種格式：</p>
+</blockquote>
+<ol>
+<li>CMD [&quot;executable&quot;,&quot;param1&quot;,&quot;param2&quot;]：exec形式，官方推薦此種方式</li>
+<li>CMD [&quot;param1&quot;,&quot;param2&quot;]：適用於有定義ENTRYPOINT指令的時候，CMD中的參數會做為ENTRYPOINT的預設參數</li>
+<li>CMD command param1 param2：會以shell的形式執行，預設是在「/bin/sh -c」下執行，適合在需要互動的指令時</li>
+</ol>
+<h2><a class="header" href="#entrypoint" id="entrypoint">ENTRYPOINT</a></h2>
+<blockquote>
+<p>用來設定映像檔啟動Container時要執行的指令，但不同的是，ENTRYPOINT一定會被執行，而不會有像CMD覆蓋的情況發生，支援二種格式：</p>
+</blockquote>
+<ol>
+<li>ENTRYPOINT [&quot;executable&quot;, &quot;param1&quot;, &quot;param2&quot;]：exec形式，官方推薦此種方式</li>
+<li>ENTRYPOINT command param1 param2：shell的形式</li>
+</ol>
+<blockquote>
+<p>使用ENTRYPOINT的注意事項：</p>
+</blockquote>
+<ul>
+<li>Dockerfile中只能有一行ENTRYPOINT，若有多行ENTRYPOINT，則只有最後一行會生效</li>
+<li>若在建立Container時有帶執行的命令，ENTRYPOINT的指令不會被覆蓋，也就是一定會執行</li>
+<li>如果想要覆蓋ENTRYPOINT的預設值，則在啟動Cont</li>
+</ul>
+<h2><a class="header" href="#copy" id="copy">COPY</a></h2>
+<blockquote>
+<p>複製本地端的檔案/目錄到映像檔的指定位置中. 
+使用COPY的注意事項：</p>
+</blockquote>
+<ul>
+<li>指令的來源位置可以多個</li>
+<li>如果目的位置是目錄的話，記得最後要以/結尾，例如：/mypath/</li>
+<li>目的位置可以是絕對路徑或者相對於WORKDIR定義值的相對路徑</li>
+<li>若目的位置不存在，會自動建立</li>
+</ul>
+<h2><a class="header" href="#add" id="add">ADD</a></h2>
+<blockquote>
+<p>和COPY一樣，可將本地端的檔案/目錄加到映像檔的指定位置內，
+雖然ADD和CMD功能類似，但有二點最大的不同：</p>
+</blockquote>
+<ol>
+<li>ADD的來源路徑支援URL，也就是說可以加入遠端的檔案，COPY則不支援URL</li>
+<li>若來源檔案是壓縮檔(副檔名為gzip、bzip2、xz)，則使用ADD加入檔案時會自動解壓縮，而COPY不會</li>
+</ol>
+<h2><a class="header" href="#expose" id="expose">EXPOSE</a></h2>
+<blockquote>
+<p>宣告在映像檔中預設要使用(對外)的連接埠，格式如下：</p>
+</blockquote>
+<blockquote>
+<p>EXPOSE 80/tcp</p>
+</blockquote>
+<blockquote>
+<p>EXPOSE 80/udp</p>
+</blockquote>
+<h2><a class="header" href="#env" id="env">ENV</a></h2>
+<blockquote>
+<p>設定環境變數，支援二種格式：</p>
+</blockquote>
+<blockquote>
+<p>ENV demoPATH=&quot;/var/log&quot; demoVer=&quot;1.0&quot;</p>
+<h4><a class="header" href="#設置tmptesttxt給demofile變數" id="設置tmptesttxt給demofile變數">設置「/tmp/test.txt」給demoFile變數</a></h4>
+<p>ENV demoFile /tmp/test.txt</p>
+<h4><a class="header" href="#使用環境變數的例子有沒有用大括號都可以" id="使用環境變數的例子有沒有用大括號都可以">使用環境變數的例子，有沒有用大括號都可以</a></h4>
+<p>COPY debug.log ${demoPATH}
+ADD $demoFile /foo</p>
+</blockquote>
+<h2><a class="header" href="#volume" id="volume">VOLUME</a></h2>
+<blockquote>
+<p>建立本機或來自其他容器的掛載點</p>
+</blockquote>
+<pre><code>VOLUME [&quot;/var/log/&quot;] 或
+VOLUME [&quot;/demo1&quot;,&quot;/demo2&quot;] 或
+VOLUME /var/log 或
+VOLUME /var/log /var/db
+</code></pre>
+<h2><a class="header" href="#workdir" id="workdir">WORKDIR</a></h2>
+<blockquote>
+<p>設定工作目錄</p>
+</blockquote>
+<h2><a class="header" href="#user" id="user">USER</a></h2>
+<blockquote>
+<p>指定運行Container時的用戶名稱或UID</p>
+</blockquote>
+<pre><code>RUN groupadd -r tester &amp;&amp; useradd -r -g tester tester
+# 指定用戶名稱
+USER tester
+
+# 或使用UID來指定
+USER 1000
+</code></pre>
+<h2><a class="header" href="#arg" id="arg">ARG</a></h2>
+<blockquote>
+<p>設定在建置映像檔時可傳入的參數，即定義變數名稱以及變數的預設值</p>
+</blockquote>
+<pre><code>ARG Param1
+ARG Param2=somevalue
+docker build --build-arg Param1=demo -t myimage:v1 .
+</code></pre>
+<h1><a class="header" href="#如何使用dockerfile-" id="如何使用dockerfile-">如何使用Dockerfile ?</a></h1>
+<pre><code>docker build -t myimage:v1 .
+docker build -f /path/to/a/Dockerfile -t myimage:v3 .
+</code></pre>
+<h2><a class="header" href="#開始-dockerize-你的應用程式" id="開始-dockerize-你的應用程式">開始 dockerize 你的應用程式</a></h2>
+<blockquote>
+<p>我們的終極目標是要把你的程式碼跟想要的環境打包起來，變成一個 image，之後不管到哪一台機器上，只要有裝 Docker 而且有這個 image 就可以把你的程式跑起來</p>
+</blockquote>
+<h3><a class="header" href="#step-0-新增-dockerfile" id="step-0-新增-dockerfile">Step 0: 新增 Dockerfile</a></h3>
+<blockquote>
+<p>先在專案目錄下新增一個空檔案叫做 Dockerfile</p>
+</blockquote>
+<h3><a class="header" href="#step-1--找到適合的-base-image" id="step-1--找到適合的-base-image">step 1 : 找到適合的 base image</a></h3>
+<blockquote>
+<p>在 Dockerfile 的第一行寫 FROM node:9.2.0，9.2.0 指的是我們使用的 node image 版本</p>
+</blockquote>
+<h3><a class="header" href="#step-2--copy-原始碼" id="step-2--copy-原始碼">step 2 : copy 原始碼</a></h3>
+<blockquote>
+<p>使用 COPY 指令，把 index.js 跟 package.json 複製到 /app 資料夾裡面</p>
+</blockquote>
+<pre><code>FROM node:9.2.0
+COPY index.js package.json /app/
+</code></pre>
+<h3><a class="header" href="#step-3--安裝-dependencies" id="step-3--安裝-dependencies">step 3 : 安裝 dependencies</a></h3>
+<blockquote>
+<p>使用 WORKDIR 切換到 /app 目錄，再用 RUN 跑 npm install &amp;&amp; npm cache clean --force，清 npm cache 是為了讓 build 出來的 image 不要包含這些 cache，這樣 image 會小一點</p>
+</blockquote>
+<h3><a class="header" href="#step-4--設定-initial-command" id="step-4--設定-initial-command">step 4 : 設定 initial command</a></h3>
+<blockquote>
+<p>用到 CMD 設定這個 image 被跑起來時的預設指令</p>
+</blockquote>
+<h3><a class="header" href="#step-5--build" id="step-5--build">step 5 : build</a></h3>
+<blockquote>
+<p>完成後就可以開始 build image，在專案目錄下跑 docker build -t simple-express-server . 就會根據 Dockerfile build 出你的 image</p>
+</blockquote>
+<pre><code>docker build -t simple-express-server .
+</code></pre>
+<blockquote>
+<p>build 完跑 docker image ls 可以看到多出一個 simple-express-server，這就是剛剛 build 出來的 image</p>
+</blockquote>
+<h3><a class="header" href="#把-image-跑起來" id="把-image-跑起來">把 image 跑起來</a></h3>
+<pre><code>docker run -p 3000:8080 simple-express-server
+</code></pre>
+<h3><a class="header" href="#跑在背景" id="跑在背景">跑在背景</a></h3>
+<pre><code>docker run -d &lt;image&gt;
+</code></pre>
+<h2><a class="header" href="#example-dockerfile" id="example-dockerfile">Example dockerfile</a></h2>
+<pre><code>FROM node:12.13.1
+COPY . .
+WORKDIR /
+RUN npm install &amp;&amp; npm cache clean --force
+CMD node server.js
+
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="Android_Studio_操作技巧.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="WSL_for_Windows_Home_10.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="Android_Studio_操作技巧.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="WSL_for_Windows_Home_10.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+        
+        
+        <script type="text/javascript">
+            window.playpen_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

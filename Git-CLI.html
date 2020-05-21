@@ -1,0 +1,398 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Git 常用 CLI 命令 - mymdbook</title>
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "light" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="Android_Studio_操作技巧.html"><strong aria-hidden="true">1.</strong> Android_Studio_操作技巧</a></li><li class="chapter-item expanded "><a href="Dockefile指令教學.html"><strong aria-hidden="true">2.</strong> Dockefile指令教學</a></li><li class="chapter-item expanded "><a href="WSL_for_Windows_Home_10.html"><strong aria-hidden="true">3.</strong> WSL_Windows_Home_10</a></li><li class="chapter-item expanded "><a href="Dockerizing_a_Nodejs_APP.html"><strong aria-hidden="true">4.</strong> Dockerizing Nodejs APP</a></li><li class="chapter-item expanded "><a href="Git-CLI.html" class="active"><strong aria-hidden="true">5.</strong> Git 常用 CLI 命令</a></li><li class="chapter-item expanded "><a href="hugo-install.html"><strong aria-hidden="true">6.</strong> HUGO Install</a></li><li class="chapter-item expanded "><a href="Install-Docker-Ubuntu-vnc-desktop.html"><strong aria-hidden="true">7.</strong> Install-Docker-Ubuntu-vnc-desktop</a></li><li class="chapter-item expanded "><a href="OpenHAB.html"><strong aria-hidden="true">8.</strong> OpenHAB</a></li><li class="chapter-item expanded "><a href="VS-Code-plugin.html"><strong aria-hidden="true">9.</strong> VS Code 常用插件</a></li><li class="chapter-item expanded "><a href="Gitea-Git-Hosting.html"><strong aria-hidden="true">10.</strong> 安裝 Gitea Git Hosting</a></li><li class="chapter-item expanded "><a href="install-mdbook.html"><strong aria-hidden="true">11.</strong> mdbook</a></li><li class="chapter-item expanded "><a href="Markdown-Tutorial.html"><strong aria-hidden="true">12.</strong> Markdown Tutorial</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">mymdbook</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1><a class="header" href="#git-版本控制常用-cli-命令" id="git-版本控制常用-cli-命令">Git 版本控制常用 CLI 命令</a></h1>
+<hr />
+<h1><a class="header" href="#git-cli-command" id="git-cli-command">Git CLI command</a></h1>
+<p>From: <a href="https://gitbook.tw/chapters/introduction/about-this-book.html">讓您精通業界最常用 Git 版本控制</a></p>
+<h2><a class="header" href="#新增初始-repository" id="新增初始-repository">新增、初始 Repository</a></h2>
+<pre><code>git init
+</code></pre>
+<h2><a class="header" href="#把檔案交給-git" id="把檔案交給-git">把檔案交給 Git</a></h2>
+<pre><code>git add newfile
+</code></pre>
+<h2><a class="header" href="#如果想要一口氣把全部的檔案加到暫存區可直接使用---all" id="如果想要一口氣把全部的檔案加到暫存區可直接使用---all">如果想要一口氣把全部的檔案加到暫存區，可直接使用 --all</a></h2>
+<pre><code>git add --all
+</code></pre>
+<h2><a class="header" href="#all-跟--參數有什麼不一樣" id="all-跟--參數有什麼不一樣">”–all” 跟 “.” 參數有什麼不一樣？</a></h2>
+<table><thead><tr><th align="left">使用參數</th><th align="left">新增檔案</th><th align="left">修改檔案</th><th align="left">刪除檔案</th></tr></thead><tbody>
+<tr><td align="left">--all</td><td align="left">O</td><td align="left">O</td><td align="left">O</td></tr>
+<tr><td align="left">.</td><td align="left">O</td><td align="left">O</td><td align="left">X</td></tr>
+</tbody></table>
+<h2><a class="header" href="#把暫存區的內容提交到倉庫裡存檔" id="把暫存區的內容提交到倉庫裡存檔">把暫存區的內容提交到倉庫裡存檔</a></h2>
+<blockquote>
+<p>-m &quot;init commit&quot; 是指要要說明「你在這次的 Commit 做了什麼事」，只要使用簡單、清楚的文字說明就好，
+中、英文都可</p>
+</blockquote>
+<pre><code>git commit -m &quot;init commit&quot;
+git commit --allow-empty -m &quot;空的&quot;
+git commit -a -m &quot;update content&quot;
+</code></pre>
+<h2><a class="header" href="#檢視紀錄" id="檢視紀錄">檢視紀錄</a></h2>
+<pre><code>git log
+git log --oneline
+git log --oneline --graph
+git log --oneline --author=&quot;Sherly&quot;   :【狀況題】我想要找某個人或某些人的 Commit…
+git log --oneline --grep=&quot;WTF&quot;   :使用 --grep 參數，可以從 Commit 訊息裡面搜尋符合字樣的內容
+git log -S &quot;Ruby&quot; : 使用 -S 參數，可以搜尋在所有 Commit 的檔案中，哪些符合特定條件的
+git log --oneline --since=&quot;9am&quot; --until=&quot;12am&quot; --after=&quot;2017-01&quot;  : 可以找出「今天早上 9 點到 12 點之間所有的 Commit」。還可以再加一個 after
+</code></pre>
+<h2><a class="header" href="#刪除檔案" id="刪除檔案">刪除檔案</a></h2>
+<pre><code>git rm welcome.html
+git rm welcome.html --cached  : 不想讓這個檔案再被 Git 控管了」的話，可以加上 --cached 參數：
+</code></pre>
+<h2><a class="header" href="#變更檔名" id="變更檔名">變更檔名</a></h2>
+<pre><code>git mv hello.html world.html
+</code></pre>
+<h2><a class="header" href="#狀況題修改-commit-紀錄" id="狀況題修改-commit-紀錄">【狀況題】修改 Commit 紀錄</a></h2>
+<ol>
+<li>把 .git 目錄整個刪除（誤）。</li>
+<li>使用 git rebase 來修改歷史。</li>
+<li>先把 Commit 用 git reset 拆掉，整理後再重新 Commit。</li>
+<li>使用 --amend 參數來修改最後一次的 Commit。</li>
+</ol>
+<pre><code>git commit --amend -m &quot;Welcome To Facebook&quot;
+</code></pre>
+<h2><a class="header" href="#狀況題追加檔案到最近一次的-commit" id="狀況題追加檔案到最近一次的-commit">【狀況題】追加檔案到最近一次的 Commit</a></h2>
+<blockquote>
+<p>剛剛完成 Commit，但發現有一個檔案忘了加到，又不想為了這個檔案重新再發一次 Commit…</p>
+</blockquote>
+<p>1.使用 git reset 把最後一次的 Commit 拆掉，加入新檔案後再重新 Commit。
+2.使用 --amend 參數進行 Commit。</p>
+<pre><code>git commit --amend --no-edit   :--no-edit 參數的意思是指「我不要編輯 Commit 訊息」
+</code></pre>
+<h2><a class="header" href="#該如何清除忽略的檔案" id="該如何清除忽略的檔案">該如何清除忽略的檔案？</a></h2>
+<pre><code>git clean -fX
+</code></pre>
+<h2><a class="header" href="#檢視特定檔案的-commit-紀錄" id="檢視特定檔案的-commit-紀錄">檢視特定檔案的 Commit 紀錄</a></h2>
+<blockquote>
+<p>如果想看這個檔案到底每次的 Commit 做了什麼修改，可以再給它一個 -p 參數</p>
+</blockquote>
+<pre><code>git log -p welcome.html
+</code></pre>
+<blockquote>
+<p>想要知道某個檔案的某一行是誰寫的嗎？</p>
+</blockquote>
+<pre><code>git blame index.html
+</code></pre>
+<h2><a class="header" href="#狀況題剛才的-commit-後悔了想要拆掉重做" id="狀況題剛才的-commit-後悔了想要拆掉重做">狀況題】剛才的 Commit 後悔了，想要拆掉重做</a></h2>
+<pre><code>git reset anySHA +^  : 這個 Commit 的「前一次」
+git reset anySHA +^^ : 則是往前兩次
+git reset master^
+git reset HEAD^
+</code></pre>
+<h2><a class="header" href="#reset-的模式" id="reset-的模式">Reset 的模式</a></h2>
+<blockquote>
+<p>分別是 
+--mixed :--mixed 是預設的參數
+--soft :  工作目錄跟暫存區的檔案都不會被丟掉，所以看起來就只有 HEAD 的移動而已
+--hard  :  不管是工作目錄以及暫存區的檔案都會丟掉 </p>
+</blockquote>
+<table><thead><tr><th align="left">模式</th><th align="left">mixed 模式</th><th align="left">soft 模式</th><th align="left">hard 模式</th></tr></thead><tbody>
+<tr><td align="left">工作目錄</td><td align="left">不變</td><td align="left">不變</td><td align="left">丟掉</td></tr>
+<tr><td align="left">暫存區</td><td align="left">丟掉</td><td align="left">不變</td><td align="left">丟掉</td></tr>
+</tbody></table>
+<h2><a class="header" href="#使用分支" id="使用分支">使用分支</a></h2>
+<pre><code>git branch
+git branch -m cat tiger   :想把 cat 分支改成 tiger 分支，使用的是 -m 參數：
+git branch -d dog     :刪除分支 dog
+git checkout cat  :切換分支to dog
+</code></pre>
+<h2><a class="header" href="#合併分支" id="合併分支">合併分支</a></h2>
+<pre><code>git checkout master
+git merge cat   :master 分支合併 cat 分支
+git merge cat --no-ff  :--no-ff 參數是「不要使用快轉模式合併」的意思
+</code></pre>
+<h2><a class="header" href="#刪掉分支" id="刪掉分支">刪掉分支</a></h2>
+<pre><code>git branch -d cat   :刪掉 cat 分支
+</code></pre>
+<h2><a class="header" href="#另一種合併方式使用-rebase" id="另一種合併方式使用-rebase">另一種合併方式（使用 rebase）</a></h2>
+<blockquote>
+</blockquote>
+<p>「重新定義分支的參考基準」的意思, Rebase 合併分支跟一般的合併分支，第一個很明顯的差別，就是使用 Rebase 方式合併分支的話，
+Git 不會特別做出一個專門用來合併的 Commit。</p>
+<pre><code>git rebase dog   :我，就是 cat 分支，我現在要重新定義我的參考基準，並且將使用 dog 分支當做我新的參考基準
+</code></pre>
+<h2><a class="header" href="#使用-orig_head" id="使用-orig_head">使用 ORIG_HEAD</a></h2>
+<blockquote>
+</blockquote>
+<p>ORIG_HEAD 會記錄「危險操作」之前 HEAD 的位置。例如分支合併或是 Reset 之類的都算是所謂的「危險操作」。透過這個紀錄點來取消這次 Rebase 相對的更簡單：</p>
+<pre><code>git rebase dog
+git reset ORIG_HEAD --hard   :可使用這個指令輕鬆的跳回 Rebase 前的狀態
+</code></pre>
+<blockquote>
+<p>使用 Rebase 時機？
+通常在還沒有推（Push）出去但感覺得有點亂（或太瑣碎）的 Commit，會先使用 Rebase 分支來整理完再推出去。
+Rebase 等於是修改歷史，修改已經推出去的歷史可能會對其它人帶來困擾，所以對於已經推出去的內容，非必要的話請盡量不要使用 Rebase</p>
+</blockquote>
+<h2><a class="header" href="#修改歷史訊息-互動模式啟動" id="修改歷史訊息-互動模式啟動">修改歷史訊息 互動模式，啟動！</a></h2>
+<pre><code>git rebase -i bb0c9c2 
+-i 參數是指要進入 Rebase 指令的「互動模式」，而後面的 bb0c9c2 是指這次的 Rebase 指令的應用範圍會「從現在到 bb0c9c2 這個 Commit」，也就是最一開始的那個 Commit
+</code></pre>
+<h2><a class="header" href="#把多個-commit-合併成一個-commit" id="把多個-commit-合併成一個-commit">把多個 Commit 合併成一個 Commit</a></h2>
+<pre><code>squash
+</code></pre>
+<h2><a class="header" href="#使用-revert-指令" id="使用-revert-指令">使用 Revert 指令</a></h2>
+<pre><code>git revert HEAD --no-edit  :--no-edit 參數，表示不編輯 Commit 訊息
+</code></pre>
+<blockquote>
+<p>什麼時候使用 Revert 指令？
+如果是自己一個人做的專案，用 Revert 指令其實有點過於「禮貌」了，大部份都是直接使用 Reset 就好。但如果對於多人共同協作的專案，也許因為團隊開發的政策，你不一定有機會可以使用 Reset 指令，這時候就可以 Revert 指令來做出一個「取消」的 Commit，對其它人來說也不算是「修改歷史」，而是新增一個 Commit，只是剛好這個 Commit 是跟某個 Commit 反向的操作而已。</p>
+</blockquote>
+<h2><a class="header" href="#resetrevert-跟-rebase-指令有什麼差別" id="resetrevert-跟-rebase-指令有什麼差別">Reset、Revert 跟 Rebase 指令有什麼差別？</a></h2>
+<table><thead><tr><th align="left">指令</th><th align="left">改變歷史紀錄</th><th align="left">說明</th></tr></thead><tbody>
+<tr><td align="left">Reset</td><td align="left">是</td><td align="left">把目前的狀態設定成某個指定的 Commit 的狀態，通常適用於尚未推出去的 Commit。</td></tr>
+<tr><td align="left">Rebase</td><td align="left">是</td><td align="left">不管是新增、修改、刪除 Commit 都相當方便，用來整理、編輯還沒有推出去的 Commit 相當方便，但通常也只適用於尚未推出去的 Commit。</td></tr>
+<tr><td align="left">Revert</td><td align="left">否</td><td align="left">新增一個 Commit 來反轉（或說取消）另一個 Commit 的內容，原本的 Commit 依舊還是會保留在歷史紀錄中。雖然會因此而增加 Commit 數，但通常比較適用於已經推出去的 Commit，或是不允許使用 Reset 或 Rebase 之修改歷史紀錄的指令的場合。</td></tr>
+</tbody></table>
+<h2><a class="header" href="#狀況題手邊的工作做到一半臨時要切換到別的任務" id="狀況題手邊的工作做到一半臨時要切換到別的任務">【狀況題】手邊的工作做到一半，臨時要切換到別的任務</a></h2>
+<ol>
+<li>那就先 Commit 目前的進度吧！
+然後就可以切到有問題的分支先進行功能修復，待完成之後再切回原來做一半的 cat 分支，然後再 Reset 一下，把剛剛做一半的東西拆回來繼續做：</li>
+</ol>
+<pre><code>git add --all
+git commit -m &quot;not finish yet&quot;
+......
+git reset HEAD^
+</code></pre>
+<ol start="2">
+<li>使用 Stash</li>
+</ol>
+<pre><code>  git stash
+  git stash list    :查查剛剛那些檔案存到哪去了
+  .....
+  .....
+  git stash pop stash@{2}   :stash@{2} 應該是我剛剛最一開始做一半的進度，所以我要把它撿回來做
+</code></pre>
+<blockquote>
+<p>使用 pop 指令，可以把某個 Stash 拿出來並套用在目前的分支上。套用成功之後，那個套用過的 Stash 就會被刪除。
+如果後面沒有指定要 pop 哪一個 Stash，會從編號最小的，也就是 stash@{0} 開始拿（也就是最後疊上去的那次）。</p>
+</blockquote>
+<blockquote>
+<p>如果那個 Stash 確定不要，可以使用 drop 指令：
+git stash drop stash@{0}    :這樣就可以把那個 Stash 從列表裡刪掉了。</p>
+</blockquote>
+<blockquote>
+<p>要把 Stash 撿回來用，除了 pop 之外，另一個指令是 apply:
+git stash apply stash@{0}</p>
+</blockquote>
+<pre><pre class="playpen"><code class="language-rust editable">fn main() {
+    let number = 5;
+    print!(&quot;{}&quot;, number);
+}
+</code></pre></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="Dockerizing_a_Nodejs_APP.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="hugo-install.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="Dockerizing_a_Nodejs_APP.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="hugo-install.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+        
+        
+        <script type="text/javascript">
+            window.playpen_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>
